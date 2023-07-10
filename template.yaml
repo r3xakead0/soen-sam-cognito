@@ -4,8 +4,22 @@ Description: >
   sam-cognito
 
   Sample SAM Template for sam-cognito
-  
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+     
+Parameters:
+  LambdaAccessKeyId:
+    Type: String
+    Default: "XXXXXXXXXXXXXXXXXXXX"
+  LambdaSecretAccessKey:
+    Type: String
+    Default: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  LambdaRegion:
+    Type: String
+    Default: "us-east-1"
+  LambdaStageName:
+    Default: dev
+    Description: StageName of API Gateway deployment
+    Type: String
+
 Globals:
   Function:
     Timeout: 3
@@ -14,14 +28,9 @@ Globals:
       - x86_64
     Environment:
       Variables:
-        LAMBDA_ACCESS_KEY_ID: "AKIA2AB4SSB7YY7ZE6U3"
-        LAMBDA_SECRET_ACCESS_KEY: "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"
-        
-Parameters:
-  APIStageName:
-    Default: api
-    Description: StageName of API Gateway deployment
-    Type: String
+        LAMBDA_ACCESS_KEY_ID: !Ref LambdaAccessKeyId
+        LAMBDA_SECRET_ACCESS_KEY: !Ref LambdaSecretAccessKey
+        LAMBDA_REGION: !Ref LambdaRegion
 
 Resources:
 
@@ -64,7 +73,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: HelloWorldAPI
-      StageName: !Ref APIStageName
+      StageName: !Ref LambdaStageName
       Cors: "'*'"
       Auth:
         Authorizers:
@@ -99,7 +108,7 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
-  login:
+  Login:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/login/
@@ -116,7 +125,7 @@ Resources:
             Method: POST
             RestApiId: !Ref AppApi
 
-  changePassword:
+  ChangePassword:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/changePassword/
@@ -131,7 +140,7 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
-  confirmPassword:
+  ConfirmPassword:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/confirmPassword/
@@ -148,7 +157,7 @@ Resources:
             Method: POST
             RestApiId: !Ref AppApi
 
-  forgotPassword:
+  ForgotPassword:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/forgotPassword/
@@ -164,7 +173,7 @@ Resources:
             Method: POST
             RestApiId: !Ref AppApi
 
-  confirmForgotPassword :
+  ConfirmForgotPassword :
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/confirmForgotPassword/
@@ -180,7 +189,7 @@ Resources:
             Method: POST
             RestApiId: !Ref AppApi
 
-  createUser:
+  CreateUser:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/createUser/
@@ -196,7 +205,7 @@ Resources:
             Method: POST
             RestApiId: !Ref AppApi
 
-  updateUser:
+  UpdateUser:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/updateUser/
@@ -214,7 +223,7 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
-  deleteUser:
+  DeleteUser:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/deleteUser/
@@ -232,7 +241,7 @@ Resources:
             Auth:
               Authorizer: CognitoAuthorizer
 
-  getUser:
+  GetUser:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: authorization/getUser/
@@ -251,30 +260,38 @@ Resources:
               Authorizer: CognitoAuthorizer
             
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Hello World function"
-    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/hello/"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/hello/"
   HelloWorldWithAuthApi:
     Description: "API Gateway endpoint URL for Hello World With Auth function"
-    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/hellowithauth/"
-  SignUpApi:
-    Description: "API Gateway endpoint URL for Get function"
-    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/getauthorization/"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/hellowithauth/"
+  LoginApi:
+    Description: "API Gateway endpoint URL for Login function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/login/"
+  
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
   HelloWorldFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
     Value: !GetAtt HelloWorldFunctionRole.Arn
+
   HelloWorldWithAuthFunction:
     Description: "Hello World With Auth Lambda Function ARN"
     Value: !GetAtt HelloWorldAuthFunction.Arn
   HelloWorldWithAuthFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World With Auth function"
     Value: !GetAtt HelloWorldAuthFunctionRole.Arn
+
+  LoginFunction:
+    Description: "Login Lambda Function ARN"
+    Value: !GetAtt LoginFunction.Arn
+  LoginFunctionIamRole:
+    Description: "Implicit IAM Role created for Login function"
+    Value: !GetAtt LoginFunctionRole.Arn
+  
   UserPoolId:
     Description: "ID of the Cognito User Pool"
     Value: !Ref UserPool

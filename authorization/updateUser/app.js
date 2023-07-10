@@ -1,7 +1,9 @@
 const {
   CognitoIdentityProviderClient,
   AdminUpdateUserAttributesCommand,
-  AdminRemoveUserFromGroupCommand 
+  AdminRemoveUserFromGroupCommand,
+  AdminListGroupsForUserCommand,
+  AdminAddUserToGroupCommand
 } = require("@aws-sdk/client-cognito-identity-provider");
 
 const cognitoClient = new CognitoIdentityProviderClient({
@@ -41,16 +43,42 @@ exports.updateUser = async (event) => {
     const command = new AdminUpdateUserAttributesCommand(params);
     const result = await cognitoClient.send(command);
 
-    const groups = body.groups;
-    for (var i = 0; i < groups.length; i++) {
+    const groupsResult = await cognitoClient.send(
+      new AdminListGroupsForUserCommand({ 
+        UserPoolId: process.env.USER_POOL_ID,
+        Username: body.username
+      })
+    );
+
+    let groupsInput = body.groups;
+    let groupsExist = groupsResult.Groups.map((groups) => groups.GroupName);
+    
+    let groupsDelete = groupsExist.filter(x => !groupsInput.includes(x));
+    
+    console.info('groupsDelete:', groupsDelete);
+        
+    for (var i = 0; i < groupsDelete.length; i++) {
       const resultGroup = await cognitoClient.send(
         new AdminRemoveUserFromGroupCommand({ 
           UserPoolId: process.env.USER_POOL_ID,
           Username: body.username, 
-          GroupName: groups[i]
+          GroupName: groupsDelete[i]
         })
       );
-      console.info('resultGroup:', resultGroup);
+    }
+    
+    let groupsAdd = groupsInput.filter(x => !groupsExist.includes(x));
+
+    console.info('groupsAdd:', groupsAdd);
+        
+    for (var i = 0; i < groupsAdd.length; i++) {
+      const resultGroup = await cognitoClient.send(
+        new AdminAddUserToGroupCommand({ 
+          UserPoolId: process.env.USER_POOL_ID,
+          Username: body.username, 
+          GroupName: groupsAdd[i]
+        })
+      );
     }
 
     response = {
