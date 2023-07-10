@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "fa89e1e7-e465-44b3-83c4-dc6766baf322",
+		"name": "Cognito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\",\r\n  \"password\": \"123456789\",\r\n  \"email\": \"rusvi_rus@hotmail.com\",\r\n  \"name\": \"Afu Tse\",\r\n  \"groups\": [\"Group-1\",\"Group-2\",\"Group-3\"]\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/createuser/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"createuser",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\",\r\n  \"name\": \"Afu Tse Mundaca\",\r\n  \"groups\": [\"Group-1\"]\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/updateuser/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"updateuser",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/deleteuser/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"deleteuser",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/getuser/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"getuser",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\",\r\n  \"password\": \"12345678\",\r\n  \"session\": \"AYABeFeiFqwjbF18URCkm2dSqdsAHQABAAdTZXJ2aWNlABBDb2duaXRvVXNlclBvb2xzAAEAB2F3cy1rbXMAS2Fybjphd3M6a21zOnVzLWVhc3QtMTo3NDU2MjM0Njc1NTU6a2V5L2IxNTVhZmNhLWJmMjktNGVlZC1hZmQ4LWE5ZTA5MzY1M2RiZQC4AQIBAHgDHnKSW2nDRJSDSLf55TGFyX5On_wV32whMfiMxuCEIAEK9Nza__VtDBrothVN1zZsAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMEF3nbB2IIK7Q0dESAgEQgDsOlENTNVOa-K4ZFrjUaFFCq3bI27QlDLaQEdAhki3yhDGAWUTYqoHOXmZAi8bhTcvt_GjIZYeZspKpoQIAAAAADAAAEAAAAAAAAAAAAAAAAADxqFyXgL9_dOI4e-VncIfi_____wAAAAEAAAAAAAAAAAAAAAEAAAC1j5Q26kSKuoNYureJo4CWFkUK_NQYgccbXdRHDRcSR2a-0Or_sD1kyXZaLTDZR-Sqg4zhMLD7-22GhA3dX9vikCeSqs2H30gQ3H4tdUQnF2dfrKluT2Hs2WgBN5N9J8nuxwA8l39ASuHY0FMqtckrZVUUThK23LD3NY8u3qGoe-R_Ql5zoK4fdIclnrXmXX5MsQPxry71ivafUMZEvv7DeMNUbY8WmKNEaYw1nXfQLMDB-x7xfHWiyTxITvYDa2DUD49GBFA\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/confirmpassword/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"confirmpassword",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/forgotpassword/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"forgotpassword",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Forgot Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\",\r\n  \"password\": \"987654321\",\r\n  \"confirm_code\": \"268666\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/confirmforgotpassword/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"confirmforgotpassword",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"r3xet\",\r\n  \"password\": \"12345678\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/login/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HelloWithAuth",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJwbjVKXC95RFRYYlgzbkpHUDl3dUx5TGR4eHVVQU5DUHlWVWFGQmR5MnB5QT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2MTc1Y2E1MC1jZGYyLTRhMWEtYWM3MS0zY2QwMjI0NDUyM2QiLCJjb2duaXRvOmdyb3VwcyI6WyJHcm91cC0zIiwiR3JvdXAtMiIsIkdyb3VwLTEiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2VPM2t4TVhJTyIsImNvZ25pdG86dXNlcm5hbWUiOiJyM3hldCIsIm9yaWdpbl9qdGkiOiI2Y2Y4MmQyMi1jMjdmLTQxNjctODJhZi05NDIyOTdmYzU5MGIiLCJhdWQiOiI3aWFmaTRmOXJjdnR0MG91ZHBzYWIyMTlsbyIsImV2ZW50X2lkIjoiOGFiNzU4MmMtY2JiNS00YzMzLWJkNGEtNDA1NGVmMDlkMmUwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2ODg3ODM1NDUsIm5hbWUiOiJBZnUgVHNlIiwiZXhwIjoxNjg4Nzg3MTQ0LCJpYXQiOjE2ODg3ODM1NDUsImp0aSI6IjAxNTY4MjRhLTI1M2ItNDkzMC05Y2IzLWQ2ZTcxMjhiNjVjMiIsImVtYWlsIjoicnVzdmlfcnVzQGhvdG1haWwuY29tIn0.so0Tpv5GTBtvDp-IdTJdxaQxsmvkLlpSbYBr6S90QnIRz9xaNYRbyaQtQj0yTA7XscM84Fpw_s4we34o7M69RtJTEs8FHTz7OebCqWDTdhaYtIOnDyonXJS-NVIn4ulwoR551EGcFzojiRh3zYI15WK98WitETnEK44-QEMzWMIXQsZSa_Ai1wJYtYLSOTaTqnXbh74z2lTsM657CgvXZdQxK-J0n2UPNh8r6laoLxbZ01Q3BoJR1O83tazbbeJYWJbPmKYNSqJCsnY9W049g7NXjdCoIgfMlyc9xMfsoK9Vd06PxnN4aKGoouizX-lzZQbeF43ZXgwI5BL14KuQTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/hellowithauth/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"hellowithauth",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hello",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/hello/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"hello",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangePassword",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"oldPassword\": \"123456789\",\r\n  \"newPassword\": \"12345678\",\r\n  \"accessToken\": \"eyJraWQiOiJudFBjd3dHS3p3MjFuZ3Vad3FsV1pcL1V0Ymd5VGU4WFpkZmVPV2w0U1wvbEU9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhNjkzMzk5Mi01MjJlLTQ2NGEtYTFlNS03Mzg3ODFkZTdhYmUiLCJjb2duaXRvOmdyb3VwcyI6WyJHcm91cC0xIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xXzgzYTZIZ0x6NCIsImNsaWVudF9pZCI6IjZjcWJzZHV0MDVvYms1MmI4cG0zZXVnOW1nIiwib3JpZ2luX2p0aSI6ImE4ZjNkNGYwLWNiNjYtNDZmZC1iNTM4LTMwMmRkZGQ5MGVmOCIsImV2ZW50X2lkIjoiM2I1OWMyY2YtZjUxNi00MzgyLWFjYzAtNWYxZGFlMzExZDMwIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTY4ODc4OTM1MiwiZXhwIjoxNjg4NzkyOTUyLCJpYXQiOjE2ODg3ODkzNTIsImp0aSI6IjllY2UyYTI0LTQxNmMtNDg0OS05NmUzLTQ0OTYxNWE0NTY5MiIsInVzZXJuYW1lIjoicjN4ZXQifQ.idzbzVTEqR2BcSL2BaGkTzDE6lh0dsIAUXEPpmoXjxWfQhN3kRg4OQ58EFzED_16y3-6pBr5jvMHLVb3H8Pr57Zcf8LOuEp17V0jfofhoVlGKqPqauN3kebqnLeqeiLyBQc4w4L5SOoSyxiLkMZcYW17WJgoCLMHRZ5Gyr8wyHcBZ8piR_hYsWuRJtBdN7mDjkcannFHOOTQMRXmhyQVHU0nVZnI5mm_7HOFNiLcU8MIh7jG55GUEuXRgnsJLZPgGGOHjTBTObEz6iUxxBWUXlmuixVy7_i4Mantxv-0E2d3QpWRJrSNLkAvm0NPVjQJndZfa30g4m3SOPhcAZZ-gA\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/changepassword/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"changepassword",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://1a89ew2dne.execute-api.us-east-1.amazonaws.com/api",
+			"type": "default"
+		}
+	]
+}

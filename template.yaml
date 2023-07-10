@@ -1,0 +1,283 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-cognito
+
+  Sample SAM Template for sam-cognito
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: nodejs18.x
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        LAMBDA_ACCESS_KEY_ID: "AKIA2AB4SSB7YY7ZE6U3"
+        LAMBDA_SECRET_ACCESS_KEY: "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"
+        
+Parameters:
+  APIStageName:
+    Default: api
+    Description: StageName of API Gateway deployment
+    Type: String
+
+Resources:
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: MyUIClient
+      UserPoolId: !Ref UserPool
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: MyUserPool
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+          RequireUppercase: false
+      Schema:
+        - AttributeDataType: String
+          Name: email
+          Required: false
+
+  UserPoolGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: Group-1
+      Description: Group number 1.
+      UserPoolId: !Ref UserPool
+
+  AppApi:
+    DependsOn: UserPool
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: HelloWorldAPI
+      StageName: !Ref APIStageName
+      Cors: "'*'"
+      Auth:
+        Authorizers:
+            CognitoAuthorizer:
+              UserPoolArn: !GetAtt "UserPool.Arn"
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello-world/
+      Handler: app.lambdaHandler
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello
+            Method: get
+            RestApiId: !Ref AppApi
+
+  HelloWorldAuthFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello-world/
+      Handler: app.lambdaHandlerAuth
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hellowithauth
+            Method: get
+            RestApiId: !Ref AppApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  login:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/login/
+      Handler: app.login
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref UserPoolClient
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+            RestApiId: !Ref AppApi
+
+  changePassword:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/changePassword/
+      Handler: app.changePassword
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /changepassword
+            Method: POST
+            RestApiId: !Ref AppApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  confirmPassword:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/confirmPassword/
+      Handler: app.confirmPassword
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref UserPoolClient
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /confirmpassword
+            Method: POST
+            RestApiId: !Ref AppApi
+
+  forgotPassword:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/forgotPassword/
+      Handler: app.forgotPassword
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref UserPoolClient
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /forgotpassword
+            Method: POST
+            RestApiId: !Ref AppApi
+
+  confirmForgotPassword :
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/confirmForgotPassword/
+      Handler: app.confirmForgotPassword 
+      Environment:
+        Variables:
+          CLIENT_ID: !Ref UserPoolClient
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /confirmforgotpassword
+            Method: POST
+            RestApiId: !Ref AppApi
+
+  createUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/createUser/
+      Handler: app.createUser
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /createuser
+            Method: POST
+            RestApiId: !Ref AppApi
+
+  updateUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/updateUser/
+      Handler: app.updateUser
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /updateuser
+            Method: PUT
+            RestApiId: !Ref AppApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  deleteUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/deleteUser/
+      Handler: app.deleteUser
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /deleteuser
+            Method: DELETE
+            RestApiId: !Ref AppApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  getUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: authorization/getUser/
+      Handler: app.getUser
+      Environment:
+        Variables:
+          USER_POOL_ID: !Ref UserPool
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /getuser
+            Method: POST
+            RestApiId: !Ref AppApi
+            Auth:
+              Authorizer: CognitoAuthorizer
+            
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Hello World function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/hello/"
+  HelloWorldWithAuthApi:
+    Description: "API Gateway endpoint URL for Hello World With Auth function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/hellowithauth/"
+  SignUpApi:
+    Description: "API Gateway endpoint URL for Get function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${APIStageName}/getauthorization/"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
+  HelloWorldFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt HelloWorldFunctionRole.Arn
+  HelloWorldWithAuthFunction:
+    Description: "Hello World With Auth Lambda Function ARN"
+    Value: !GetAtt HelloWorldAuthFunction.Arn
+  HelloWorldWithAuthFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World With Auth function"
+    Value: !GetAtt HelloWorldAuthFunctionRole.Arn
+  UserPoolId:
+    Description: "ID of the Cognito User Pool"
+    Value: !Ref UserPool
+  CognitoClientId:
+    Description: "ID of the Cognito User Pool Client"
+    Value: !Ref UserPoolClient
