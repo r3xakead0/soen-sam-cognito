@@ -42,6 +42,8 @@ exports.updateUser = async (event) => {
 
     const command = new AdminUpdateUserAttributesCommand(params);
     const result = await cognitoClient.send(command);
+    
+    console.info('result:', result);
 
     const groupsResult = await cognitoClient.send(
       new AdminListGroupsForUserCommand({ 

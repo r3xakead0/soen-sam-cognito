@@ -37,12 +37,16 @@ exports.getUser = async (event) => {
       new AdminGetUserCommand(params)
     );
 
+    console.info('result:', result);
+
     const resultGroup = await cognitoClient.send(
       new AdminListGroupsForUserCommand({
         UserPoolId: process.env.USER_POOL_ID,
         Username: body.username,
       })
     );
+    
+    console.info('resultGroup:', result);
     
     response = {
       statusCode: 200,

@@ -14,6 +14,7 @@ const cognitoClient = new CognitoIdentityProviderClient({
   region: process.env.AWS_REGION,
 });
 
+/*
 const login = async (event) => {
 
   if (event.httpMethod !== 'POST') {
@@ -30,7 +31,6 @@ const login = async (event) => {
     const body = JSON.parse(event.body);
 
     const params = {
-      //AuthFlow: "USER_PASSWORD_AUTH",W
       AuthFlow: AuthFlowType.USER_PASSWORD_AUTH ,
       ClientId: process.env.CLIENT_ID,
       UserPoolId: process.env.USER_POOL_ID,
@@ -92,8 +92,9 @@ const login = async (event) => {
 
   return response;
 }
+*/
 
-const adminLogin = async (event) => {
+const login = async (event) => {
 
   if (event.httpMethod !== 'POST') {
     throw new Error(`adminLogin only accepts POST method, you tried: ${event.httpMethod} method.`);
@@ -172,6 +173,5 @@ const adminLogin = async (event) => {
 }
 
 module.exports = {
-  login,
-  adminLogin
+  login
 };

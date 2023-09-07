@@ -270,6 +270,15 @@ Outputs:
   LoginApi:
     Description: "API Gateway endpoint URL for Login function"
     Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/login/"
+  ChangePasswordApi:
+    Description: "API Gateway endpoint URL for Change Password function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/changePassword/"
+  ConfirmPasswordApi:
+    Description: "API Gateway endpoint URL for Confirm Password function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/confirmPassword/"
+  ForgotPasswordApi:
+    Description: "API Gateway endpoint URL for Forgot Password function"
+    Value: !Sub "https://${AppApi}.execute-api.${AWS::Region}.amazonaws.com/${LambdaStageName}/forgotPassword/"
   
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"

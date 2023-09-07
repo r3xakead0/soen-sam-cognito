@@ -11,7 +11,7 @@ const cognitoClient = new CognitoIdentityProviderClient({
   region: process.env.AWS_REGION,
 });
 
-const forgotPassword = async (event) => {
+exports.forgotPassword = async (event) => {
 
   if (event.httpMethod !== 'POST') {
     throw new Error(`forgotPassword only accepts POST method, you tried: ${event.httpMethod} method.`);
@@ -54,8 +54,4 @@ const forgotPassword = async (event) => {
   console.info(`response from: ${event.path} statusCode: ${response.statusCode} body: ${response.body}`);
 
   return response;
-};
-  
-module.exports = {
-  forgotPassword
 };
